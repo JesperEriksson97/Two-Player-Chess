@@ -1,0 +1,45 @@
+<project name="Chess" basedir="." default="run">
+
+    <property name="src.dir" value="src"/>
+    <property name="classes.dir" value="bin"/>
+    <property name="main-class" value="control.GameController"/>
+    <property name="images.dir" value="images"/>
+    <property name="jar.dir" value="lib"/>
+    <property name="name_of_jar" value="Chess.jar"/>
+
+    <target name="clean">
+        <echo>Cleaning the .class files.</echo>
+        <delete dir="${classes.dir}"/>
+        <echo>Deleting the jar file.</echo>
+        <delete dir="${jar.dir}"/>
+    </target>
+
+    <target name="compile">
+        <echo>Compiling the .java files.</echo>
+        <mkdir dir="${classes.dir}"/>
+        <javac debug="on" srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <target name="copy-images">
+        <echo>Copying the .gif files into the ${classes.dir} folder.</echo>
+        <copy todir="${classes.dir}">
+            <fileset dir="${images.dir}"/>
+        </copy>
+    </target>
+
+    <target name="run" depends="compile, copy-images">
+        <echo>Copying the .gif files into the ${classes.dir} folder.</echo>
+        <echo>Running the application.</echo>
+        <java fork="true" failonerror="yes" classname="${main-class}" classpath="${classes.dir}"/>
+    </target>
+
+    <target name="jar" depends="compile, copy-images">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${name_of_jar}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
